@@ -1,5 +1,6 @@
 package com.kevvlvl.observableapi.handler
 
+import com.kevvlvl.observableapi.audit.AuditRequest
 import com.kevvlvl.observableapi.model.Car
 import com.kevvlvl.observableapi.service.CarService
 import org.slf4j.LoggerFactory
@@ -19,6 +20,8 @@ class CarsHandler @Autowired constructor(private val carService: CarService) {
     }
 
     fun cars(request: ServerRequest): Flux<Car> {
+
+        AuditRequest.audit(request)
 
         logger.info("Query All cars from Database")
         logger.debug("cars() START - About to call CarService")

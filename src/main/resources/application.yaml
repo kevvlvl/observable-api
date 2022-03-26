@@ -19,7 +19,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: loggers,health
+        include: loggers,health,prometheus
   endpoint:
     loggers:
       enabled: true

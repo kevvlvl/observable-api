@@ -19,8 +19,15 @@ docker container run -d --name observableapidb -p 5432:5432 -e POSTGRES_PASSWORD
 ### API Calls
 
 ```shell
-curl -H "X-USER: kevuser" localhost:8080/cars
+curl -H "X-USER: kevsuperduperuser" -H "Content-Type: application/json" localhost:8080/cars
 ```
+
+### Actuator Metrics
+
+| Page        | URL                                       |
+|:------------|:------------------------------------------|
+| Actuator    | http://localhost:8080/actuator/           |
+ | Prometheus  | http://localhost:8080/actuator/prometheus |
 
 ## Deploy using k8s
 
