@@ -36,3 +36,7 @@ curl -H "X-USER: kevsuperduperuser" -H "Content-Type: application/json" localhos
 ```shell
 ./gradlew jibDockerBuild
 ```
+
+## TODO
+
+- add opentelemetry: https://reflectoring.io/spring-boot-tracing/

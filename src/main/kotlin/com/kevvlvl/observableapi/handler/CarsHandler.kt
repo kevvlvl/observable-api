@@ -23,12 +23,13 @@ class CarsHandler @Autowired constructor(private val carService: CarService) {
 
         AuditRequest.audit(request)
 
-        logger.info("Query All cars from Database")
+        logger.info("About to query for all cars from the DB")
         logger.debug("cars() START - About to call CarService")
 
         val cars = carService.getAllCars()
 
         logger.debug("cars() END - CarService called")
+        logger.info("Done querying for all cars.")
 
         return cars
     }

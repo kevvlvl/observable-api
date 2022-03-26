@@ -27,8 +27,7 @@ class ApiRoute {
     @Bean
     fun route(carHandler: CarsHandler): RouterFunction<ServerResponse> {
 
-        logger.debug("route() define routes")
-
+        logger.info("Initialised routes")
 
         return route(GET("/cars")) {
             ok().body(carHandler.cars(it))

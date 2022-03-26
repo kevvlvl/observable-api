@@ -7,6 +7,8 @@ class AuditRequest {
 
     companion object {
 
+        private const val HEADER_USERNAME = "X-USER"
+
         @Suppress("JAVA_CLASS_ON_COMPANION")
         @JvmStatic
         private val logger = LoggerFactory.getLogger(javaClass.enclosingClass)
@@ -14,7 +16,7 @@ class AuditRequest {
         fun audit(request: ServerRequest) {
 
             logger.info("User {} Queried {}",
-                request.headers().header("X-USER"),
+                request.headers().header(HEADER_USERNAME),
                 request.requestPath())
         }
     }

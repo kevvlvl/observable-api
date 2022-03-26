@@ -23,7 +23,17 @@ class CarService @Autowired constructor(private val carRepository: CarRepository
 
         val carsEntities = carRepository.findAll()
 
-        logger.debug("getAllCars() END - CarRepository returned {} cars", carsEntities.size)
+        if(carsEntities.size > 0) {
+
+            logger.info("Number of cars returned from DB {}", carsEntities.size)
+            logger.debug("Cars entities returned:")
+            carsEntities.forEach { c -> logger.debug("   Car = {}", c) }
+
+        } else {
+            logger.warn("No cars returned from the DB")
+        }
+
+        logger.debug("getAllCars() END - Return Iterable carsEntities")
 
         return Flux.fromIterable(carsEntities)
     }
