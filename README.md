@@ -29,8 +29,6 @@ curl -H "X-USER: kevsuperduperuser" -H "Content-Type: application/json" localhos
 | Actuator    | http://localhost:8080/actuator/           |
  | Prometheus  | http://localhost:8080/actuator/prometheus |
 
-## Deploy using k8s
-
 ### Build the API using Maven Jib
 
 ```shell
@@ -39,4 +37,5 @@ curl -H "X-USER: kevsuperduperuser" -H "Content-Type: application/json" localhos
 
 ## TODO
 
+- add businessrules to apply to the entities/DTO. Add "business rule" logs
 - add opentelemetry: https://reflectoring.io/spring-boot-tracing/
