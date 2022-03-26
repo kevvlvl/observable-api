@@ -1,0 +1,34 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: db1234
+  flyway:
+    enabled: true
+    schemas: postgres
+    sql-migration-prefix: local_
+  application:
+    name: messaging-api
+logging:
+  level.com.kevvlvl.observableapi: debug
+  level.root: info
+management:
+  endpoints:
+    web:
+      exposure:
+        include: loggers,health
+  endpoint:
+    loggers:
+      enabled: true
+    health:
+      probes:
+        enabled: true
+      show-details: always
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
