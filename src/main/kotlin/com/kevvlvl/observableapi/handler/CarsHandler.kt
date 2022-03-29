@@ -1,7 +1,7 @@
 package com.kevvlvl.observableapi.handler
 
 import com.kevvlvl.observableapi.audit.AuditRequest
-import com.kevvlvl.observableapi.model.Car
+import com.kevvlvl.observableapi.dto.CarDto
 import com.kevvlvl.observableapi.service.CarService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +20,7 @@ class CarsHandler @Autowired constructor(
         private val logger = LoggerFactory.getLogger(javaClass.enclosingClass)
     }
 
-    fun cars(request: ServerRequest): Flux<Car> {
+    fun cars(request: ServerRequest): Flux<CarDto> {
 
         AuditRequest.audit(request)
 

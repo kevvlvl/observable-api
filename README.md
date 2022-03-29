@@ -26,6 +26,18 @@ docker container run -d --name observableapidb -p 5432:5432 -e POSTGRES_PASSWORD
 curl -H "X-USER: kevsuperduperuser" -H "Content-Type: application/json" localhost:8080/cars
 ```
 
+#### Actuator
+
+Actuator endpoint
+```shell
+http://localhost:8080/actuator
+```
+
+Actuator Custom health check details can be found here
+```shell
+http://localhost:8080/actuator/health
+```
+
 #### Logs
 
 #### Traces
@@ -63,4 +75,4 @@ Example where we create a new child span (created at the service-layer). The Spa
 
 ## TODO
 
-- add businessrules to apply to the entities/DTO. Add "business rule" logs
+- dump all config at startup in debug

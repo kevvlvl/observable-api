@@ -23,6 +23,6 @@ class PostgresHealthIndicator(dataSource: DataSource?) : DataSourceHealthIndicat
         query = "SELECT count(*) as \"Count\" from car"
         super.doHealthCheck(builder)
 
-        logger.debug("doHealthCheck() END - verified. See results of /actuator/health for details")
+        logger.debug("doHealthCheck() END - verified. See /actuator/health for details")
     }
 }
