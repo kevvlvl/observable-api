@@ -46,9 +46,8 @@ class CarService @Autowired constructor(
             logger.warn("No cars returned from the DB")
         }
 
-        svcSpan.end()
-
         logger.debug("getAllCars() END - Return DTOs")
+        svcSpan.end()
 
         return Flux.fromIterable(carsDtos)
     }
