@@ -10,7 +10,8 @@ import org.springframework.web.reactive.function.server.ServerRequest
 import reactor.core.publisher.Flux
 
 @Component
-class CarsHandler @Autowired constructor(private val carService: CarService) {
+class CarsHandler @Autowired constructor(
+    private val carService: CarService) {
 
     companion object {
 

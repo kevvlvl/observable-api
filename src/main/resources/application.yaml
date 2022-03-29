@@ -11,7 +11,7 @@ spring:
     schemas: postgres
     sql-migration-prefix: local_
   application:
-    name: messaging-api
+    name: observable-api
 logging:
   level.com.kevvlvl.observableapi: debug
   level.root: info
