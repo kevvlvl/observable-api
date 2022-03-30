@@ -72,7 +72,3 @@ Example where we create a new child span (created at the service-layer). The Spa
 ```shell
 ./gradlew jibDockerBuild
 ```
-
-## TODO
-
-- dump all config at startup in debug
