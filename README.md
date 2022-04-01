@@ -1,10 +1,13 @@
 # observable-api
 
-A Spring reactive Kotlin written API to showcase various observability concepts
+This repo showcases various observability concepts using a Spring Boot based application
 
-- Spring boot reactive, built using Gradle
+## Tech Stack
+
+- REST service using Spring boot reactive + PostgreSQL
 - Written in Kotlin for JVM 17
-- Using PostgreSQL
+- Distributed tracing with OpenTracing + Jaeger
+- Metrics exposed using micrometer
 
 ## Observability concepts
 
@@ -21,22 +24,32 @@ A few best-practices have been implemented here to help various stakeholders
 
 We use Spring Cloud Sleuth with an opentelemetry implementation (instead of opentracing/brave). See [Spring Experimental Projects](https://spring-projects-experimental.github.io/spring-cloud-sleuth-otel/docs/current/reference/html/getting-started.html) for more
 
-In the code, there's an example where we create a new child span (created at the service-layer). The Span ID "112eec40fa03de27" is created to visualize a distinct traceability of the Service layer (CarService)
+In the code, there's an example where we create a new child span (```Span reported: e965ef21f008a949:d68675a8ac3fe2c2:e965ef21f008a949:1 - car-svc-getAllCars```). The Span ID "112eec40fa03de27" is created to visualize a distinct traceability of the Service layer (CarService)
 
 ```shell
-2022-03-29 01:02:52.488  INFO [observable-api,6b3fe68273bc26e602da135f5b9098f9,542fe1039875d6fe] 9411 --- [or-http-epoll-2] c.k.observableapi.audit.AuditRequest     : User [kevsuperduperuser] Queried /cars
-2022-03-29 01:02:52.488  INFO [observable-api,6b3fe68273bc26e602da135f5b9098f9,542fe1039875d6fe] 9411 --- [or-http-epoll-2] c.k.observableapi.handler.CarsHandler    : About to query for all cars from the DB
-2022-03-29 01:02:52.488 DEBUG [observable-api,6b3fe68273bc26e602da135f5b9098f9,542fe1039875d6fe] 9411 --- [or-http-epoll-2] c.k.observableapi.handler.CarsHandler    : cars() START - About to call CarService
-2022-03-29 01:02:52.489 DEBUG [observable-api,6b3fe68273bc26e602da135f5b9098f9,112eec40fa03de27] 9411 --- [or-http-epoll-2] c.k.observableapi.service.CarService     : getAllCars() START - About to call CarRepository
-2022-03-29 01:02:52.602  INFO [observable-api,6b3fe68273bc26e602da135f5b9098f9,112eec40fa03de27] 9411 --- [or-http-epoll-2] c.k.observableapi.service.CarService     : Number of cars returned from DB 4
-2022-03-29 01:02:52.602 DEBUG [observable-api,6b3fe68273bc26e602da135f5b9098f9,112eec40fa03de27] 9411 --- [or-http-epoll-2] c.k.observableapi.service.CarService     : Cars entities returned:
-2022-03-29 01:02:52.603 DEBUG [observable-api,6b3fe68273bc26e602da135f5b9098f9,112eec40fa03de27] 9411 --- [or-http-epoll-2] c.k.observableapi.service.CarService     :    Car = Car(id=1, name='Audi A4', msrp=44000, inventory=1000)
-2022-03-29 01:02:52.606 DEBUG [observable-api,6b3fe68273bc26e602da135f5b9098f9,112eec40fa03de27] 9411 --- [or-http-epoll-2] c.k.observableapi.service.CarService     :    Car = Car(id=2, name='Audi S3', msrp=48000, inventory=2000)
-2022-03-29 01:02:52.606 DEBUG [observable-api,6b3fe68273bc26e602da135f5b9098f9,112eec40fa03de27] 9411 --- [or-http-epoll-2] c.k.observableapi.service.CarService     :    Car = Car(id=3, name='Audi S4', msrp=61000, inventory=1800)
-2022-03-29 01:02:52.606 DEBUG [observable-api,6b3fe68273bc26e602da135f5b9098f9,112eec40fa03de27] 9411 --- [or-http-epoll-2] c.k.observableapi.service.CarService     :    Car = Car(id=4, name='Audi RS6', msrp=125000, inventory=20)
-2022-03-29 01:02:52.606 DEBUG [observable-api,6b3fe68273bc26e602da135f5b9098f9,112eec40fa03de27] 9411 --- [or-http-epoll-2] c.k.observableapi.service.CarService     : getAllCars() END - Return Iterable carsEntities
-2022-03-29 01:02:52.606 DEBUG [observable-api,6b3fe68273bc26e602da135f5b9098f9,542fe1039875d6fe] 9411 --- [or-http-epoll-2] c.k.observableapi.handler.CarsHandler    : cars() END - CarService called
-2022-03-29 01:02:52.607  INFO [observable-api,6b3fe68273bc26e602da135f5b9098f9,542fe1039875d6fe] 9411 --- [or-http-epoll-2] c.k.observableapi.handler.CarsHandler    : Done querying for all cars.
+2022-04-01 14:39:33.828  INFO 18393 --- [or-http-epoll-2] c.k.observableapi.audit.AuditRequest     : User [kevsuperduperuser] Queried /cars
+2022-04-01 14:39:33.829  INFO 18393 --- [or-http-epoll-2] c.k.observableapi.handler.CarsHandler    : About to query for all cars from the DB
+2022-04-01 14:39:33.829 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.handler.CarsHandler    : cars() START - About to call CarService
+2022-04-01 14:39:33.829 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.service.CarService     : getAllCars() START - About to call CarRepository
+2022-04-01 14:39:33.928  INFO 18393 --- [or-http-epoll-2] i.j.internal.reporters.LoggingReporter   : Span reported: e965ef21f008a949:6c94ee4d37383003:e965ef21f008a949:1 - Query
+2022-04-01 14:39:33.950  INFO 18393 --- [or-http-epoll-2] c.k.observableapi.service.CarService     :    Number of cars returned from DB 4
+2022-04-01 14:39:33.950 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.service.CarService     :    Cars entities returned:
+2022-04-01 14:39:33.950 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.service.CarService     :    Car = Car(id=1, name='Audi A4', msrp=44000, inventory=1000)
+2022-04-01 14:39:33.954 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.service.CarService     :    Car = Car(id=2, name='Audi S3', msrp=48000, inventory=2000)
+2022-04-01 14:39:33.954 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.service.CarService     :    Car = Car(id=3, name='Audi S4', msrp=61000, inventory=1800)
+2022-04-01 14:39:33.954 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.service.CarService     :    Car = Car(id=4, name='Audi RS6', msrp=125000, inventory=20)
+2022-04-01 14:39:33.955 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.service.CarService     :    Obtained carsEntities. Prepare entities into DTO
+2022-04-01 14:39:33.955 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.delivery.CarDelivery   : getPreparedData() START - Prepare entities into DTOs
+2022-04-01 14:39:33.955  INFO 18393 --- [or-http-epoll-2] c.k.observableapi.delivery.CarDelivery   : CD01 - Begin reviewing cars inventory
+2022-04-01 14:39:33.955  INFO 18393 --- [or-http-epoll-2] c.k.observableapi.delivery.CarDelivery   : CD01 - Reviewed
+2022-04-01 14:39:33.955  INFO 18393 --- [or-http-epoll-2] c.k.observableapi.delivery.CarDelivery   : CD02 - Begin adding supplementary info
+2022-04-01 14:39:33.955  INFO 18393 --- [or-http-epoll-2] c.k.observableapi.delivery.CarDelivery   : CD02 - Done adding supplementary info
+2022-04-01 14:39:33.956 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.delivery.CarDelivery   : getPreparedData() END - Return carsDtos. Count = 4
+2022-04-01 14:39:33.956 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.service.CarService     : getAllCars() END - Return DTOs
+2022-04-01 14:39:33.956  INFO 18393 --- [or-http-epoll-2] i.j.internal.reporters.LoggingReporter   : Span reported: e965ef21f008a949:d68675a8ac3fe2c2:e965ef21f008a949:1 - car-svc-getAllCars
+2022-04-01 14:39:33.956 DEBUG 18393 --- [or-http-epoll-2] c.k.observableapi.handler.CarsHandler    : cars() END - CarService called
+2022-04-01 14:39:33.956  INFO 18393 --- [or-http-epoll-2] c.k.observableapi.handler.CarsHandler    : Done querying for all cars.
+2022-04-01 14:39:34.017  INFO 18393 --- [or-http-epoll-2] i.j.internal.reporters.LoggingReporter   : Span reported: e965ef21f008a949:e965ef21f008a949:0:1 - /cars
 ```
 
 ### Metrics
@@ -58,7 +71,28 @@ Prometheus-compatible metrics are implemented using micrometer and exposed using
 docker container run -d --name observableapidb -p 5432:5432 -e POSTGRES_PASSWORD=db1234 postgres:alpine
 ```
 
-#### 2) Run the API
+#### 2) Run Jaeger
+
+From https://www.jaegertracing.io/docs/1.32/getting-started/
+
+```shell
+docker run -d --name jaeger \
+  -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 \
+  -p 5775:5775/udp \
+  -p 6831:6831/udp \
+  -p 6832:6832/udp \
+  -p 5778:5778 \
+  -p 16686:16686 \
+  -p 14250:14250 \
+  -p 14268:14268 \
+  -p 14269:14269 \
+  -p 9411:9411 \
+  jaegertracing/all-in-one:1.32
+```
+
+Jaeger UI: http://localhost:16686/
+
+#### 3) Run the API
 
 The API will pre-populate the database (DDL + DML) using flyway
 
