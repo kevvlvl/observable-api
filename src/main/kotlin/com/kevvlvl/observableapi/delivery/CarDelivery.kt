@@ -22,7 +22,7 @@ class CarDelivery @Autowired constructor() {
 
         val carsDtos = ArrayList<CarDto>()
         logger.debug("getPreparedData() START - Prepare entities into DTOs")
-        logger.info("CD01 - Begin reviewing cars inventory")
+        logger.info("BUSINESS RULE CD01 - Begin reviewing cars inventory")
 
         if(carsEntities.isNotEmpty()) {
 
@@ -37,8 +37,8 @@ class CarDelivery @Autowired constructor() {
             }
         }
 
-        logger.info("CD01 - Reviewed")
-        logger.info("CD02 - Begin adding supplementary info")
+        logger.info("BUSINESS RULE CD01 - Reviewed")
+        logger.info("BUSINESS RULE CD02 - Begin adding supplementary info")
 
         // TODO: add additional info for each DTO
 
@@ -48,7 +48,7 @@ class CarDelivery @Autowired constructor() {
             c.deliveryComments = "Perform inspection and exterior wash"
         }
 
-        logger.info("CD02 - Done adding supplementary info")
+        logger.info("BUSINESS RULE CD02 - Done adding supplementary info")
 
         logger.debug("getPreparedData() END - Return carsDtos. Count = {}", carsDtos.size)
         return carsDtos
