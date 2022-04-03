@@ -22,7 +22,7 @@ A few best-practices have been implemented here to help various stakeholders
 
 ### Traces
 
-We use Spring Cloud Sleuth with an opentelemetry implementation (instead of opentracing/brave). See [Spring Experimental Projects](https://spring-projects-experimental.github.io/spring-cloud-sleuth-otel/docs/current/reference/html/getting-started.html) for more
+Note that opentracing is _deprecated_ and effort is being put to evolve OpenTelemetry. For the purpose of this example, opentracing and jaeger is a mature integration while the spring opentelemetry project is currently in experimental phase. For more: [Spring Experimental Projects](https://spring-projects-experimental.github.io/spring-cloud-sleuth-otel/docs/current/reference/html/getting-started.html)
 
 In the code, there's an example where we create a new child span (```Span reported: e965ef21f008a949:d68675a8ac3fe2c2:e965ef21f008a949:1 - car-svc-getAllCars```). The Span ID "112eec40fa03de27" is created to visualize a distinct traceability of the Service layer (CarService)
 
@@ -125,8 +125,49 @@ http://localhost:8080/actuator/health
 
 ### API
 
+#### Working (HTTP 200) GET Call
+
 Pass the notion of a "user" using the header key "X-USER"
 
+- showcases logging for various stakeholders (audit/security, analysts, devs/ops)
+- showcases custom spans
+
 ```shell
-curl -H "X-USER: kevsuperduperuser" -H "Content-Type: application/json" localhost:8080/cars
+curl -v -H "X-USER: kevsuperduperuser" -H "Content-Type: application/json" localhost:8080/cars
+```
+
+After every call, see metrics: http://localhost:8080/actuator/prometheus
+
+```
+http_server_requests_seconds_count{exception="None",method="GET",outcome="SUCCESS",status="200",uri="/cars",} 1.0
+http_server_requests_seconds_sum{exception="None",method="GET",outcome="SUCCESS",status="200",uri="/cars",} 0.131502888
+# HELP http_server_requests_seconds_max  
+# TYPE http_server_requests_seconds_max gauge
+http_server_requests_seconds_max{exception="None",method="GET",outcome="SUCCESS",status="200",uri="/cars",} 0.131502888
+```
+
+Metrics of interest here:
+
+| Metric                             | Description                                       |
+|:-----------------------------------|:--------------------------------------------------|
+| http_server_requests_seconds_count | Sum of requests at this endpoint                  |
+| http_server_requests_seconds_max   | Sum of duration of every request at this endpoint |
+
+#### Non-Working (HTTP 5xx) POST call
+
+```shell
+curl -v -X POST localhost:8080/cars/reserve
+```
+
+- showcases tracing visualisation
+- showcases metrics (http5xx)
+
+After every call, see metrics: http://localhost:8080/actuator/prometheus
+
+```
+http_server_requests_seconds_count{exception="None",method="POST",outcome="SERVER_ERROR",status="500",uri="/cars/reserve",} 3.0
+http_server_requests_seconds_sum{exception="None",method="POST",outcome="SERVER_ERROR",status="500",uri="/cars/reserve",} 0.003941968
+# HELP http_server_requests_seconds_max  
+# TYPE http_server_requests_seconds_max gauge
+http_server_requests_seconds_max{exception="None",method="POST",outcome="SERVER_ERROR",status="500",uri="/cars/reserve",} 0.001958607
 ```
