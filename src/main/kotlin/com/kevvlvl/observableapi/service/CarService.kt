@@ -26,29 +26,32 @@ class CarService @Autowired constructor(
 
     fun getAllCars(): Flux<CarDto> {
 
+        logger.debug("getAllCars() START. Create a new trace span")
         val svcSpan = this.trace.buildSpan("car-svc-getAllCars").start()
 
-        logger.debug("getAllCars() START - About to call CarRepository")
-
+        logger.debug("About to call carRepository")
         val carsEntities: List<Car> = carRepository.findAll()
         var carsDtos: List<CarDto> = ArrayList()
 
         if(carsEntities.isNotEmpty()) {
 
-            logger.info("   Number of cars returned from DB {}", carsEntities.size)
-            logger.debug("   Cars entities returned:")
-            carsEntities.forEach { c -> logger.debug("   Car = {}", c) }
-            svcSpan.setTag("getAllCars-count", carsEntities.size.toString())
+            val carsCount: String = carsEntities.size.toString()
+            logger.info("Cars found in database {}", carsCount)
 
-            logger.debug("   Obtained carsEntities. Prepare entities into DTO")
+            carsEntities.forEach { c -> logger.debug("   Car = {}", c) }
+
+            svcSpan.setTag("getAllCars-count", carsCount)
+
+            logger.debug("carsEntities returned. Prepare entities into DTO")
             carsDtos = carDelivery.getPreparedData(carsEntities);
 
         } else {
-            logger.warn("No cars returned from the DB")
+            logger.warn("No cars found in the database. This could be normal. Try querying the table Car directly from an RDBMS client")
         }
 
-        logger.debug("getAllCars() END - Return DTOs")
+        logger.debug("Finish the newly created trace span")
         svcSpan.finish()
+        logger.debug("getAllCars() END - Return DTOs")
 
         return Flux.fromIterable(carsDtos)
     }

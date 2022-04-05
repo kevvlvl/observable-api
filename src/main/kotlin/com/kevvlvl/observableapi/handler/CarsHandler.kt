@@ -23,13 +23,13 @@ class CarsHandler @Autowired constructor(
 
     fun cars(request: ServerRequest): Mono<ServerResponse> {
 
-        logger.info("About to query for all cars from the DB")
-        logger.debug("cars() START - About to call CarService")
+        logger.info("Queried for the complete inventory of cars to be fetched from the database")
+        logger.debug("cars() START - About to call carService")
 
         val cars = carService.getAllCars()
 
         logger.debug("cars() END - CarService called")
-        logger.info("Done querying for all cars.")
+        logger.info("Fetched all cars.")
 
         return ServerResponse
             .ok()
@@ -38,7 +38,10 @@ class CarsHandler @Autowired constructor(
 
     fun reserve(request: ServerRequest): Mono<ServerResponse> {
 
-        // mock endpoint always returns HTTP 500 to showcase metrics
+        logger.info("Received a request to reserve cars prior to purchase")
+        logger.debug("reserve() START - About to call carService")
+
+        // mock endpoint always returns HTTP 500 to showcase HTTP5xx metrics
         return ServerResponse
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .build()

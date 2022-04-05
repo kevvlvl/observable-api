@@ -4,14 +4,14 @@ This repo showcases observability concepts using a Spring Boot based application
 
 ## Tech Stack
 
-| Concept  | Tech                          |
-|:---------|:------------------------------|
-| Language | Kotlin + JVM 17               |
-| REST     | Spring Boot Reactive          |
-| DB       | Postgresql + FlywayDB         |
-| Tracing  | Opentracing + Jaeger          |
-| Metrics  | Micrometer                    |
- | Logging  | Spring Boot default (logback) |
+| Concept  | Tech                                       |
+|:---------|:-------------------------------------------|
+| Language | Kotlin + JVM 17                            |
+| REST     | Spring Boot Reactive                       |
+| DB       | Postgresql + FlywayDB                      |
+| Tracing  | Opentracing + Jaeger                       |
+| Metrics  | Micrometer                                 |
+ | Logging  | Spring Boot default (logback) + Spring AOP |
 
 ## Observability concepts
 
@@ -20,9 +20,11 @@ This repo showcases observability concepts using a Spring Boot based application
 A few best-practices have been implemented here to help various stakeholders
 
 - Prior to the spring boot server startup, we dump all active configuration properties in DEBUG. This can help developers or operations to confirm the application setup
-- We log in INFO general information/steps at key places
+- We log in INFO general information/steps at key places to indicate flow progression
 - We log in INFO business rules traceability that can help QA/analysts/devs
-- We log in INFO audit entries: Who (user) queried what (endpoint) when (log timestamp) 
+- We log in INFO audit entries: Who (user) queried what (endpoint) when (log timestamp)
+
+- We log in DEBUG using Spring AOP (Aspect-Oriented Programming = cross-cutting) to log the call flow
 
 ### Traces
 
