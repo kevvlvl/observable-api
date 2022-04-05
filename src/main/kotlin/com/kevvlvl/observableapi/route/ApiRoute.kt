@@ -1,5 +1,6 @@
 package com.kevvlvl.observableapi.route
 
+import com.kevvlvl.observableapi.audit.AuditRequest
 import com.kevvlvl.observableapi.handler.CarsHandler
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
@@ -25,8 +26,14 @@ class ApiRoute {
 
         logger.info("Initialised routes")
 
-        return route(GET("/cars"), carHandler::cars)
-            .andRoute(POST("/cars/reserve"), carHandler::reserve)
+        return route(GET("/cars")) {
 
+            AuditRequest.audit(it)
+            carHandler.cars(it)
+        }
+            .andRoute(POST("/cars/reserve")) {
+                AuditRequest.audit(it)
+                carHandler.reserve(it)
+            }
     }
 }

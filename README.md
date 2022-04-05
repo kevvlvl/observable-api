@@ -1,13 +1,17 @@
 # observable-api
 
-This repo showcases various observability concepts using a Spring Boot based application
+This repo showcases observability concepts using a Spring Boot based application
 
 ## Tech Stack
 
-- REST service using Spring boot reactive + PostgreSQL
-- Written in Kotlin for JVM 17
-- Distributed tracing with OpenTracing + Jaeger
-- Metrics exposed using micrometer
+| Concept  | Tech                  |
+|:---------|:----------------------|
+| Language | Kotlin + JVM 17       |
+| REST     | Spring Boot Reactive  |
+| DB       | Postgresql + FlywayDB |
+| Tracing  | Opentracing + Jaeger  |
+| Metrics  | Micrometer            |
+ | Logging  | Spring Boot default   |
 
 ## Observability concepts
 
@@ -133,7 +137,7 @@ Pass the notion of a "user" using the header key "X-USER"
 - showcases custom spans
 
 ```shell
-curl -v -H "X-USER: kevsuperduperuser" -H "Content-Type: application/json" localhost:8080/cars
+curl -v -H "X-USER: kevsuperduperuser" localhost:8080/cars
 ```
 
 After every call, see metrics: http://localhost:8080/actuator/prometheus
@@ -156,7 +160,7 @@ Metrics of interest here:
 #### Non-Working (HTTP 5xx) POST call
 
 ```shell
-curl -v -X POST localhost:8080/cars/reserve
+curl -v -X POST -H "X-USER: kevsuperduperuser" localhost:8080/cars/reserve
 ```
 
 - showcases tracing visualisation
