@@ -1,5 +1,6 @@
 package com.kevvlvl.observableapi.service
 
+import com.kevvlvl.observableapi.aspect.LogFlow
 import com.kevvlvl.observableapi.delivery.CarDelivery
 import com.kevvlvl.observableapi.dto.CarDto
 import com.kevvlvl.observableapi.model.Car
@@ -8,7 +9,6 @@ import io.opentracing.Tracer
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import reactor.core.publisher.Flux
 
 @Service
 class CarService @Autowired constructor(
@@ -24,9 +24,10 @@ class CarService @Autowired constructor(
         private val logger = LoggerFactory.getLogger(javaClass.enclosingClass)
     }
 
-    fun getAllCars(): Flux<CarDto> {
+    @LogFlow
+    fun getAllCars(): List<CarDto> {
 
-        logger.debug("getAllCars() START. Create a new trace span")
+        logger.debug("Create a new trace span")
         val svcSpan = this.trace.buildSpan("car-svc-getAllCars").start()
 
         logger.debug("About to call carRepository")
@@ -36,14 +37,17 @@ class CarService @Autowired constructor(
         if(carsEntities.isNotEmpty()) {
 
             val carsCount: String = carsEntities.size.toString()
-            logger.info("Cars found in database {}", carsCount)
+            logger.info("Cars found in database $carsCount")
 
-            carsEntities.forEach { c -> logger.debug("   Car = {}", c) }
+            carsEntities.forEach { c -> logger.debug("   Car = $c") }
 
             svcSpan.setTag("getAllCars-count", carsCount)
 
-            logger.debug("carsEntities returned. Prepare entities into DTO")
+            logger.debug("carsEntities returned. Map entities to DTOs and apply business rules")
             carsDtos = carDelivery.getPreparedData(carsEntities);
+
+            logger.debug("carsDtos mapped.")
+            carsDtos.forEach { c -> logger.debug("   CarDto = $c") }
 
         } else {
             logger.warn("No cars found in the database. This could be normal. Try querying the table Car directly from an RDBMS client")
@@ -51,8 +55,7 @@ class CarService @Autowired constructor(
 
         logger.debug("Finish the newly created trace span")
         svcSpan.finish()
-        logger.debug("getAllCars() END - Return DTOs")
 
-        return Flux.fromIterable(carsDtos)
+        return carsDtos
     }
 }

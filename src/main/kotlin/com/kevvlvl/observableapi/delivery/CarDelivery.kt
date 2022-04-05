@@ -50,7 +50,7 @@ class CarDelivery @Autowired constructor() {
 
         logger.info("BUSINESS RULE CD02 - Done adding supplementary info")
 
-        logger.debug("getPreparedData() END - Return carsDtos. Count = {}", carsDtos.size)
+        logger.debug("getPreparedData() END - Return carsDtos. Count = ${carsDtos.size}")
         return carsDtos
     }
 }

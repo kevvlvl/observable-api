@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.body
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Component
@@ -24,16 +25,14 @@ class CarsHandler @Autowired constructor(
     fun cars(request: ServerRequest): Mono<ServerResponse> {
 
         logger.info("Queried for the complete inventory of cars to be fetched from the database")
-        logger.debug("cars() START - About to call carService")
 
         val cars = carService.getAllCars()
 
-        logger.debug("cars() END - CarService called")
         logger.info("Fetched all cars.")
 
         return ServerResponse
             .ok()
-            .body(cars)
+            .body(Flux.fromIterable(cars))
     }
 
     fun reserve(request: ServerRequest): Mono<ServerResponse> {
