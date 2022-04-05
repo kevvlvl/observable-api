@@ -4,14 +4,14 @@ This repo showcases observability concepts using a Spring Boot based application
 
 ## Tech Stack
 
-| Concept  | Tech                  |
-|:---------|:----------------------|
-| Language | Kotlin + JVM 17       |
-| REST     | Spring Boot Reactive  |
-| DB       | Postgresql + FlywayDB |
-| Tracing  | Opentracing + Jaeger  |
-| Metrics  | Micrometer            |
- | Logging  | Spring Boot default   |
+| Concept  | Tech                          |
+|:---------|:------------------------------|
+| Language | Kotlin + JVM 17               |
+| REST     | Spring Boot Reactive          |
+| DB       | Postgresql + FlywayDB         |
+| Tracing  | Opentracing + Jaeger          |
+| Metrics  | Micrometer                    |
+ | Logging  | Spring Boot default (logback) |
 
 ## Observability concepts
 
