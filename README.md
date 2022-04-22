@@ -67,6 +67,19 @@ Prometheus-compatible metrics are implemented using micrometer and exposed using
 | Actuator    | http://localhost:8080/actuator/           |
 | Prometheus  | http://localhost:8080/actuator/prometheus |
 
+In the class CarDelivery, we also implement a custom metric called cd02-delivery demonstrating custom metrics
+
+After performing an API call of the GET endpoint, we can see this metric being available for Prometheus:
+
+```shell
+# HELP cd02_delivery_total The number of occurrences a request for inventory has successfully been enriched with delivery information
+# TYPE cd02_delivery_total counter
+cd02_delivery_total{businessrule="cd02",} 2.0
+```
+
+2 means that incremented twice in the CarDelivery class the enrichment of cars inventory.
+git When investigaitng API calls, this kind of business-logic metric can be used to cross reference network calls, to see if the counts are aligned such as here: 1 GET call = 1 increase of this cd02_delivery counter
+
 ## Build and Deploy
 
 ### Locally (using Docker)
