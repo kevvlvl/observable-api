@@ -92,10 +92,10 @@ docker container run -d --name observableapidb -p 5432:5432 -e POSTGRES_PASSWORD
 
 #### 2) Run Jaeger
 
-From https://www.jaegertracing.io/docs/1.32/getting-started/
+From https://www.jaegertracing.io/docs/1.33/getting-started/
 
 ```shell
-docker run -d --name jaeger \
+docker container run -d --name jaeger \
   -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 \
   -p 5775:5775/udp \
   -p 6831:6831/udp \
