@@ -11,7 +11,7 @@ This repo showcases observability concepts using a Spring Boot based application
 | DB       | Postgresql + FlywayDB                      |
 | Tracing  | Opentracing + Jaeger                       |
 | Metrics  | Micrometer                                 |
- | Logging  | Spring Boot default (logback) + Spring AOP |
+| Logging  | Spring Boot default (logback) + Spring AOP |
 
 ## Observability concepts
 
